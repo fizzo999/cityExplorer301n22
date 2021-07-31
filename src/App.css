@@ -24,9 +24,13 @@ img {
   margin: 12px;
   border-radius: 12px;
   box-shadow: 24px 24px 24px 12px rgba(121, 121, 121, 0.145);
+  border: solid 3px #f2ff0400;
+  transition: all 400ms ease-in-out;
 }
 img:hover {
-  box-shadow: 24px 24px 24px 12px rgba(251, 255, 4, 0.419);
+  box-shadow: 0 0 55px 25px #f2ff044f;
+  border: solid 3px #f2ff044f;
+  opacity: 0.8;
 }
 
 button {
@@ -35,4 +39,11 @@ button {
   border: 1px solid black;
   padding: 6px 24px;
   box-shadow: 6px 6px 24px 12px rgba(121, 121, 121, 0.145);
+  transition: all 400ms ease-in-out;
+}
+
+button:hover {
+  box-shadow: 0 0 55px 25px #f2ff044f;
+  border: solid 1px #f2ff044f;
+  opacity: 0.8;
 }
