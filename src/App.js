@@ -15,6 +15,7 @@ class App extends React.Component {
       status: 0,
       imageSource: '',
       zoomLevel: 12,
+      weatherResultsArray: [],
     };
   }
 
@@ -29,11 +30,14 @@ class App extends React.Component {
     try {
       let API = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATIONIQ_KEY}&q=${this.state.city}&format=json`;
       let cityResults = await axios.get(API);
+      console.log('here is api ', API);
+      console.log('cityResults ', cityResults);
       this.setState({
         hasSearched: true,
         citySearchResult: cityResults.data[0],
         status: cityResults.status,
         imageSource: `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATIONIQ_KEY}&center=${cityResults.data[0].lat},${cityResults.data[0].lon}&zoom=12`,
+        hasError: false,
       });
     } catch (error) {
       console.log(
@@ -42,6 +46,23 @@ class App extends React.Component {
       );
       this.setState({
         hasSearched: true,
+        hasError: true,
+        errorMessage: error.response.data.error,
+        status: error.response.status,
+      });
+    }
+    try {
+      let API2 = `http://172.27.47.36:3001/weather?city=${this.state.city}`;
+      let weatherResults = await axios.get(API2);
+      console.log('here is api2 ', API2);
+      console.log('weatherResults', weatherResults);
+      this.setState({
+        hasError: false,
+        weatherResultsArray: weatherResults.data,
+      });
+    } catch (error) {
+      console.log('here is your error message =======>>>>>>>>', error.response);
+      this.setState({
         hasError: true,
         errorMessage: error.response.data.error,
         status: error.response.status,
@@ -63,6 +84,10 @@ class App extends React.Component {
 
   render() {
     console.log('here is your error', this.state.errorMessage);
+    console.log(
+      'here is your weatherResultsArray',
+      this.state.weatherResultsArray
+    );
     return (
       <Container>
         <h1>City Explorer</h1>
@@ -114,6 +139,16 @@ class App extends React.Component {
         ) : (
           ''
         )}
+        {this.state.weatherResultsArray.length !== 0
+          ? this.state.weatherResultsArray.map((eachForecast, index) => {
+              return (
+                <h3 key={index}>
+                  date: {eachForecast.date}, description:{' '}
+                  {eachForecast.description}
+                </h3>
+              );
+            })
+          : ''}
       </Container>
     );
   }
