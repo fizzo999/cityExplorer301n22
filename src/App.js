@@ -2,6 +2,8 @@ import React from 'react';
 import './App.css';
 import axios from 'axios';
 import Container from 'react-bootstrap/Container';
+import Card from 'react-bootstrap/Card';
+// import CardColumns from 'react-bootstrap/CardColumns';
 
 class App extends React.Component {
   constructor(props) {
@@ -13,9 +15,10 @@ class App extends React.Component {
       errorMessage: '',
       citySearchResult: {},
       status: 0,
-      imageSource: '',
       zoomLevel: 12,
       weatherResultsArray: [],
+      lat: 0,
+      lon: 0,
     };
   }
 
@@ -27,58 +30,72 @@ class App extends React.Component {
 
   handleSubmit = async e => {
     e.preventDefault();
+    if (!this.state.city) {
+      this.setState({
+        hasSearched: false,
+        hasError: true,
+        errorMessage: 'Please typa a valid city name',
+        status: 400,
+      });
+      return;
+    }
     try {
       let API = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATIONIQ_KEY}&q=${this.state.city}&format=json`;
       let cityResults = await axios.get(API);
-      console.log('here is api ', API);
+      // console.log('here is api ', API);
       console.log('cityResults ', cityResults);
       this.setState({
         hasSearched: true,
         citySearchResult: cityResults.data[0],
         status: cityResults.status,
-        imageSource: `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATIONIQ_KEY}&center=${cityResults.data[0].lat},${cityResults.data[0].lon}&zoom=12`,
+        lat: cityResults.data[0].lat,
+        lon: cityResults.data[0].lon,
         hasError: false,
       });
+      this.getWeather();
     } catch (error) {
       console.log(
         'here is your error message =======>>>>>>>>',
         error.response.data.error
       );
       this.setState({
-        hasSearched: true,
+        hasSearched: false,
         hasError: true,
         errorMessage: error.response.data.error,
         status: error.response.status,
       });
     }
+  };
+
+  getWeather = async () => {
     try {
-      let API2 = `http://172.27.47.36:3001/weather?city=${this.state.city}`;
+      let API2 = `http://localhost:3001/weather?city=${this.state.city}`;
       let weatherResults = await axios.get(API2);
-      console.log('here is api2 ', API2);
-      console.log('weatherResults', weatherResults);
+      // console.log('here is api2 ', API2);
+      // console.log('weatherResults', weatherResults);
       this.setState({
         hasError: false,
         weatherResultsArray: weatherResults.data,
       });
     } catch (error) {
-      console.log('here is your error message =======>>>>>>>>', error.response);
+      console.log('here is your error message =======>>>>>>>>', error);
       this.setState({
+        hasSearched: false,
         hasError: true,
-        errorMessage: error.response.data.error,
+        errorMessage: error.response.data,
         status: error.response.status,
       });
+      console.log('here is your error <<<<<<<<=======>>>>>>>>', error.response);
     }
   };
   handleZoomIn = () => {
     this.setState({
       zoomLevel: this.state.zoomLevel + 1,
-      imageSource: `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATIONIQ_KEY}&center=${this.state.citySearchResult.lat},${this.state.citySearchResult.lon}&zoom=${this.state.zoomLevel}`,
     });
   };
   handleZoomOut = () => {
     this.setState({
       zoomLevel: this.state.zoomLevel - 1,
-      imageSource: `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATIONIQ_KEY}&center=${this.state.citySearchResult.lat},${this.state.citySearchResult.lon}&zoom=${this.state.zoomLevel}`,
     });
   };
 
@@ -101,17 +118,16 @@ class App extends React.Component {
         {this.state.hasSearched ? (
           <h3>
             here is information about the city you searched:{' '}
-            <em style={{ color: 'red' }}>{this.state.city}</em>
+            <em className='red'>{this.state.city}</em>
           </h3>
         ) : (
           ''
         )}
         {this.state.hasSearched ? (
           <h3>
-            ok and here is your LAT:{' '}
-            <em style={{ color: 'red' }}> {this.state.citySearchResult.lat}</em>{' '}
+            ok and here is your LAT: <em className='red'> {this.state.lat}</em>{' '}
             and your LONG:
-            <em style={{ color: 'red' }}> {this.state.citySearchResult.lon}</em>
+            <em className='red'> {this.state.lon}</em>
           </h3>
         ) : (
           ''
@@ -119,7 +135,7 @@ class App extends React.Component {
         {this.state.hasSearched ? (
           <>
             <img
-              src={this.state.imageSource}
+              src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATIONIQ_KEY}&center=${this.state.lat},${this.state.lon}&zoom=${this.state.zoomLevel}`}
               alt={`This should display ${this.state.city}`}
               title={this.state.city}
             />
@@ -132,23 +148,47 @@ class App extends React.Component {
           ''
         )}
         {this.state.hasError ? (
-          <h2 style={{ color: 'red' }}>
-            {' '}
-            error status code: {this.state.status}
-          </h2>
+          <>
+            <h2 className='red'> error status code: {this.state.status}</h2>
+            <h2 className='red'> error message: {this.state.errorMessage}</h2>
+          </>
         ) : (
           ''
         )}
-        {this.state.weatherResultsArray.length !== 0
-          ? this.state.weatherResultsArray.map((eachForecast, index) => {
+
+        {this.state.weatherResultsArray.length !== 0 &&
+        this.state.hasSearched === true ? (
+          <Container className='forecast'>
+            {' '}
+            {this.state.weatherResultsArray.map((eachForecast, index) => {
               return (
-                <h3 key={index}>
-                  date: {eachForecast.date}, description:{' '}
-                  {eachForecast.description}
-                </h3>
+                <React.Fragment>
+                  <Card
+                    key={index}
+                    border='primary'
+                    style={{
+                      width: '300px',
+                      padding: '32px',
+                      margin: '24px',
+                    }}
+                    className={
+                      eachForecast.description.includes('Sky')
+                        ? 'blue'
+                        : eachForecast.description.includes('rain')
+                        ? 'rain'
+                        : 'clouds'
+                    }
+                  >
+                    <Card.Title>date: {eachForecast.date}</Card.Title>
+                    <Card.Text>{eachForecast.description}</Card.Text>
+                  </Card>
+                </React.Fragment>
               );
-            })
-          : ''}
+            })}
+          </Container>
+        ) : (
+          ''
+        )}
       </Container>
     );
   }

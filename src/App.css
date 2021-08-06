@@ -47,3 +47,32 @@ button:hover {
   border: solid 1px #f2ff044f;
   opacity: 0.8;
 }
+
+.red {
+  color: red;
+}
+
+.forecast {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.card {
+  box-shadow: 6px 6px 24px 12px rgba(121, 121, 121, 0.145);
+}
+
+.blue {
+  background-color: blue;
+  color: white;
+}
+
+.rain {
+  background-color: darkseagreen;
+}
+
+.clouds {
+  background-color: darkgray;
+}
