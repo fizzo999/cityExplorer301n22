@@ -2,8 +2,9 @@ import React from 'react';
 import './App.css';
 import axios from 'axios';
 import Container from 'react-bootstrap/Container';
-import Card from 'react-bootstrap/Card';
-// import CardColumns from 'react-bootstrap/CardColumns';
+// import Card from 'react-bootstrap/Card';
+import CardColumns from 'react-bootstrap/CardColumns';
+import Weather from './Weather.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -14,11 +15,15 @@ class App extends React.Component {
       hasError: false,
       errorMessage: '',
       citySearchResult: {},
-      status: 0,
-      zoomLevel: 12,
-      weatherResultsArray: [],
       lat: 0,
       lon: 0,
+      status: 0,
+      zoomLevel: 12,
+      mapDisplaying: false,
+      weatherDisplaying: false,
+      weatherResultsArray: [],
+      moviesDisplaying: false,
+      moviesResultsArray: [],
     };
   }
 
@@ -42,8 +47,6 @@ class App extends React.Component {
     try {
       let API = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATIONIQ_KEY}&q=${this.state.city}&format=json`;
       let cityResults = await axios.get(API);
-      // console.log('here is api ', API);
-      console.log('cityResults ', cityResults);
       this.setState({
         hasSearched: true,
         citySearchResult: cityResults.data[0],
@@ -69,23 +72,47 @@ class App extends React.Component {
 
   getWeather = async () => {
     try {
-      let API2 = `http://localhost:3001/weather?city=${this.state.city}`;
+      let API2 = `${process.env.REACT_APP_BACKEND_SERVER}/weather?lat=${this.state.lat}&lon=${this.state.lon}`;
       let weatherResults = await axios.get(API2);
-      // console.log('here is api2 ', API2);
-      // console.log('weatherResults', weatherResults);
       this.setState({
         hasError: false,
         weatherResultsArray: weatherResults.data,
+        status: weatherResults.status,
       });
     } catch (error) {
       console.log('here is your error message =======>>>>>>>>', error);
       this.setState({
         hasSearched: false,
         hasError: true,
-        errorMessage: error.response.data,
-        status: error.response.status,
+        errorMessage: error.response.data ? error.response.data : error,
+        status: error.response.status ? error.response.status : error,
       });
       console.log('here is your error <<<<<<<<=======>>>>>>>>', error.response);
+    }
+  };
+  getMovies = async () => {
+    try {
+      let API3 = `${process.env.REACT_APP_BACKEND_SERVER}/movies?city=${this.state.city}`;
+      let movieResultsArray = await axios.get(API3);
+      this.setState({
+        hasError: false,
+        movieResultsArray: movieResultsArray.data,
+      });
+    } catch (error) {
+      console.log(
+        'here is your error message for Movies =======>>>>>>>>',
+        error
+      );
+      this.setState({
+        hasSearched: false,
+        hasError: true,
+        errorMessage: error.response,
+        status: error.response.status,
+      });
+      console.log(
+        'here is your error . response <<<<<<<<=======>>>>>>>>',
+        error.response
+      );
     }
   };
   handleZoomIn = () => {
@@ -100,11 +127,29 @@ class App extends React.Component {
   };
 
   render() {
-    console.log('here is your error', this.state.errorMessage);
-    console.log(
-      'here is your weatherResultsArray',
-      this.state.weatherResultsArray
-    );
+    // console.log('here is your error', this.state.errorMessage);
+    // console.log(
+    //   'here is your weatherResultsArray',
+    //   this.state.weatherResultsArray
+    // );
+    let weatherComponentArray = [];
+    if (this.state.weatherResultsArray.length > 0) {
+      weatherComponentArray = this.state.weatherResultsArray.map(
+        (eachForecast, index) => {
+          return (
+            <Weather
+              key={index}
+              description={eachForecast.description}
+              date={eachForecast.date}
+            />
+          );
+        }
+      );
+    }
+    // console.log(
+    //   'here is weatherComponentArray=====================>>>>>>>>',
+    //   weatherComponentArray
+    // );
     return (
       <Container>
         <h1>City Explorer</h1>
@@ -158,33 +203,8 @@ class App extends React.Component {
 
         {this.state.weatherResultsArray.length !== 0 &&
         this.state.hasSearched === true ? (
-          <Container className='forecast'>
-            {' '}
-            {this.state.weatherResultsArray.map((eachForecast, index) => {
-              return (
-                <React.Fragment>
-                  <Card
-                    key={index}
-                    border='primary'
-                    style={{
-                      width: '300px',
-                      padding: '32px',
-                      margin: '24px',
-                    }}
-                    className={
-                      eachForecast.description.includes('Sky')
-                        ? 'blue'
-                        : eachForecast.description.includes('rain')
-                        ? 'rain'
-                        : 'clouds'
-                    }
-                  >
-                    <Card.Title>date: {eachForecast.date}</Card.Title>
-                    <Card.Text>{eachForecast.description}</Card.Text>
-                  </Card>
-                </React.Fragment>
-              );
-            })}
+          <Container>
+            <CardColumns>{weatherComponentArray}</CardColumns>
           </Container>
         ) : (
           ''

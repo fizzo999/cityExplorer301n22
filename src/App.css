@@ -61,6 +61,9 @@ button:hover {
 }
 
 .card {
+  width: 300px;
+  padding: 32px;
+  margin: 24px;
   box-shadow: 6px 6px 24px 12px rgba(121, 121, 121, 0.145);
 }
 
