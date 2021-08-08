@@ -68,14 +68,21 @@ button:hover {
 }
 
 .blue {
-  background-color: blue;
+  background-color: rgba(0, 0, 255, 0.515);
   color: white;
 }
 
 .rain {
-  background-color: darkseagreen;
+  background-color: rgba(143, 188, 143, 0.515);
 }
 
 .clouds {
-  background-color: darkgray;
+  background-color: rgba(169, 169, 169, 0.515);
+}
+
+.weatherDiv img {
+  width: 120px;
+  border: 1px solid white;
+  border-radius: 12px;
+  padding: 6px;
 }

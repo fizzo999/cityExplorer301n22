@@ -5,6 +5,8 @@ import Container from 'react-bootstrap/Container';
 // import Card from 'react-bootstrap/Card';
 import CardColumns from 'react-bootstrap/CardColumns';
 import Weather from './Weather.js';
+import Movie from './Movie.js';
+import CarouselComponent from './Carousel.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -56,6 +58,7 @@ class App extends React.Component {
         hasError: false,
       });
       this.getWeather();
+      this.getMovies();
     } catch (error) {
       console.log(
         'here is your error message =======>>>>>>>>',
@@ -87,16 +90,16 @@ class App extends React.Component {
         errorMessage: error.response.data ? error.response.data : error,
         status: error.response.status ? error.response.status : error,
       });
-      console.log('here is your error <<<<<<<<=======>>>>>>>>', error.response);
     }
   };
   getMovies = async () => {
     try {
       let API3 = `${process.env.REACT_APP_BACKEND_SERVER}/movies?city=${this.state.city}`;
-      let movieResultsArray = await axios.get(API3);
+      let movieArray = await axios.get(API3);
       this.setState({
         hasError: false,
-        movieResultsArray: movieResultsArray.data,
+        moviesResultsArray: movieArray.data,
+        status: movieArray.status,
       });
     } catch (error) {
       console.log(
@@ -106,13 +109,9 @@ class App extends React.Component {
       this.setState({
         hasSearched: false,
         hasError: true,
-        errorMessage: error.response,
-        status: error.response.status,
+        errorMessage: error.response.data ? error.response.data : error,
+        status: error.response.status ? error.response.status : error,
       });
-      console.log(
-        'here is your error . response <<<<<<<<=======>>>>>>>>',
-        error.response
-      );
     }
   };
   handleZoomIn = () => {
@@ -127,11 +126,6 @@ class App extends React.Component {
   };
 
   render() {
-    // console.log('here is your error', this.state.errorMessage);
-    // console.log(
-    //   'here is your weatherResultsArray',
-    //   this.state.weatherResultsArray
-    // );
     let weatherComponentArray = [];
     if (this.state.weatherResultsArray.length > 0) {
       weatherComponentArray = this.state.weatherResultsArray.map(
@@ -141,15 +135,32 @@ class App extends React.Component {
               key={index}
               description={eachForecast.description}
               date={eachForecast.date}
+              icon={eachForecast.icon}
             />
           );
         }
       );
     }
-    // console.log(
-    //   'here is weatherComponentArray=====================>>>>>>>>',
-    //   weatherComponentArray
-    // );
+    let moviesComponentArray = [];
+    if (this.state.moviesResultsArray.length > 0) {
+      moviesComponentArray = this.state.moviesResultsArray.map(
+        (movie, index) => {
+          return (
+            <Movie
+              key={index}
+              title={movie.title}
+              overview={movie.overview}
+              average_votes={movie.average_votes}
+              total_votes={movie.total_votes}
+              image_url={movie.image_url}
+              popularity={movie.popularity}
+              released_on={movie.released_on}
+            />
+          );
+        }
+      );
+    }
+
     return (
       <Container>
         <h1>City Explorer</h1>
@@ -203,8 +214,17 @@ class App extends React.Component {
 
         {this.state.weatherResultsArray.length !== 0 &&
         this.state.hasSearched === true ? (
-          <Container>
+          <Container className='weatherDiv'>
+            <CarouselComponent></CarouselComponent>
             <CardColumns>{weatherComponentArray}</CardColumns>
+          </Container>
+        ) : (
+          ''
+        )}
+        {this.state.moviesResultsArray.length !== 0 &&
+        this.state.hasSearched === true ? (
+          <Container className='moviesDiv'>
+            <CardColumns>{moviesComponentArray}</CardColumns>
           </Container>
         ) : (
           ''

@@ -16,6 +16,10 @@ export class Weather extends Component {
           }
         >
           <Card.Title>date: {this.props.date}</Card.Title>
+          <Card.Img
+            variant='top'
+            src={`./weather_icons/${this.props.icon}.png`}
+          />
           <Card.Text>{this.props.description}</Card.Text>
         </Card>
       </>
