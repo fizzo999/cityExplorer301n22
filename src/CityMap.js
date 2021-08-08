@@ -15,13 +15,13 @@ export class CityMap extends Component {
             <br />
             <Button
               className='zoomButton'
-              onClick={() => this.props.handleZoomIn()}
+              onClick={() => this.props.handleZoom(+1)}
             >
               <i class='bi bi-zoom-in'></i> Zoom in{' '}
             </Button>
             <Button
               className='zoomButton'
-              onClick={() => this.props.handleZoomOut()}
+              onClick={() => this.props.handleZoom(-1)}
             >
               <i class='bi bi-zoom-out'></i> Zoom out{' '}
             </Button>

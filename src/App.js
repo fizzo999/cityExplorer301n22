@@ -2,16 +2,14 @@ import React from 'react';
 import './App.css';
 import axios from 'axios';
 import Container from 'react-bootstrap/Container';
-// import Button from 'react-bootstrap/Button';
-import CardColumns from 'react-bootstrap/CardColumns';
-import Weather from './Weather.js';
-import Movie from './Movie.js';
 // import CarouselComponent from './Carousel.js';
 import Header from './Header.js';
 import CityForm from './CityForm.js';
 import CityResult from './CityResult.js';
 import CityMap from './CityMap.js';
 import ErrorComponent from './ErrorComponent.js';
+import WeatherComponent from './WeatherComponent.js';
+import MoviesComponent from './MoviesComponent.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -134,14 +132,9 @@ class App extends React.Component {
       });
     }
   };
-  handleZoomIn = () => {
+  handleZoom = amount => {
     this.setState({
-      zoomLevel: this.state.zoomLevel + 1,
-    });
-  };
-  handleZoomOut = () => {
-    this.setState({
-      zoomLevel: this.state.zoomLevel - 1,
+      zoomLevel: this.state.zoomLevel + amount,
     });
   };
 
@@ -152,43 +145,6 @@ class App extends React.Component {
   };
 
   render() {
-    let weatherComponentArray = [];
-    if (this.state.weatherResultsArray.length > 0) {
-      weatherComponentArray = this.state.weatherResultsArray.map(
-        (eachForecast, index) => {
-          return (
-            <Weather
-              key={index}
-              description={eachForecast.description}
-              low={eachForecast.low}
-              high={eachForecast.high}
-              date={eachForecast.date}
-              icon={eachForecast.icon}
-            />
-          );
-        }
-      );
-    }
-    let moviesComponentArray = [];
-    if (this.state.moviesResultsArray.length > 0) {
-      moviesComponentArray = this.state.moviesResultsArray.map(
-        (movie, index) => {
-          return (
-            <Movie
-              key={index}
-              title={movie.title}
-              overview={movie.overview}
-              average_votes={movie.average_votes}
-              total_votes={movie.total_votes}
-              image_url={movie.image_url}
-              popularity={movie.popularity}
-              released_on={movie.released_on}
-            />
-          );
-        }
-      );
-    }
-
     return (
       <Container>
         <Header />
@@ -213,31 +169,21 @@ class App extends React.Component {
           lon={this.state.lon}
           zoomLevel={this.state.zoomLevel}
           city={this.state.city}
-          handleZoomIn={this.handleZoomIn}
-          handleZoomOut={this.handleZoomOut}
+          handleZoom={this.handleZoom}
         />
         <ErrorComponent
           hasError={this.state.hasError}
           status={this.state.status}
           errorMessage={this.state.errorMessage}
         />
-        {this.state.weatherResultsArray.length !== 0 &&
-        this.state.weatherDisplaying === true ? (
-          <Container className='weatherDiv'>
-            {/* <CarouselComponent></CarouselComponent> */}
-            <CardColumns>{weatherComponentArray}</CardColumns>
-          </Container>
-        ) : (
-          ''
-        )}
-        {this.state.moviesResultsArray.length !== 0 &&
-        this.state.moviesDisplaying === true ? (
-          <Container className='moviesDiv'>
-            <CardColumns>{moviesComponentArray}</CardColumns>
-          </Container>
-        ) : (
-          ''
-        )}
+        <WeatherComponent
+          weatherResultsArray={this.state.weatherResultsArray}
+          weatherDisplaying={this.state.weatherDisplaying}
+        />
+        <MoviesComponent
+          moviesResultsArray={this.state.moviesResultsArray}
+          moviesDisplaying={this.state.moviesDisplaying}
+        />
       </Container>
     );
   }
