@@ -11,7 +11,7 @@ export class CityForm extends Component {
           <input onChange={e => this.props.handleChange(e)}></input>
           <br />
           <Button type='submit' className='exploreButton'>
-            <i class='bi bi-search'></i>EXPLORE !!!
+            <i className='bi bi-search'></i>EXPLORE !!!
           </Button>
         </form>
       </>

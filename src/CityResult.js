@@ -22,7 +22,7 @@ export class CityResult extends Component {
               className='stateChangerButton'
               onClick={() => this.props.changeDisplay('mapDisplaying')}
             >
-              <i class='bi bi-map-fill'></i>
+              <i className='bi bi-map-fill'></i>
               {this.props.mapDisplaying ? 'Hide' : 'Show'} map
             </Button>
             <Button
@@ -36,14 +36,14 @@ export class CityResult extends Component {
               className='stateChangerButton'
               onClick={() => this.props.changeDisplay('weatherDisplaying')}
             >
-              <i class='bi bi-cloud-sun-fill'></i>
+              <i className='bi bi-cloud-sun-fill'></i>
               {this.props.weatherDisplaying ? 'Hide' : 'Show'} weather
             </Button>
             <Button
               className='stateChangerButton'
               onClick={() => this.props.changeDisplay('restaurantsDisplaying')}
             >
-              <i class='bi bi-cup-straw'></i>
+              <i className='bi bi-cup-straw'></i>
               {this.props.restaurantsDisplaying ? 'Hide' : 'Show'} restaurants
             </Button>
           </>

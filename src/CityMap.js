@@ -18,13 +18,13 @@ export class CityMap extends Component {
               className='zoomButton'
               onClick={() => this.props.handleZoom(+1)}
             >
-              <i class='bi bi-zoom-in'></i> Zoom in{' '}
+              <i className='bi bi-zoom-in'></i> Zoom in{' '}
             </Button>
             <Button
               className='zoomButton'
               onClick={() => this.props.handleZoom(-1)}
             >
-              <i class='bi bi-zoom-out'></i> Zoom out{' '}
+              <i className='bi bi-zoom-out'></i> Zoom out{' '}
             </Button>
             <h3>current zoom level: {this.props.zoomLevel}</h3>
           </>
