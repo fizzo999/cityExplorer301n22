@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Container from 'react-bootstrap/Container';
-import CardColumns from 'react-bootstrap/CardColumns';
+// import CardColumns from 'react-bootstrap/CardColumns';
 import Weather from './Weather.js';
 
 export class WeatherComponent extends Component {
@@ -48,7 +48,7 @@ export class WeatherComponent extends Component {
         this.props.weatherDisplaying === true ? (
           <Container className='weatherDiv'>
             {/* <CarouselComponent></CarouselComponent> */}
-            <CardColumns>{weatherComponentArray}</CardColumns>
+            {weatherComponentArray}
           </Container>
         ) : (
           ''

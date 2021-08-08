@@ -10,6 +10,7 @@ import CityMap from './CityMap.js';
 import ErrorComponent from './ErrorComponent.js';
 import WeatherComponent from './WeatherComponent.js';
 import MoviesComponent from './MoviesComponent.js';
+// import Footer from './Footer.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -29,6 +30,8 @@ class App extends React.Component {
       weatherResultsArray: [],
       moviesDisplaying: false,
       moviesResultsArray: [],
+      restaurantsDisplaying: false,
+      restaurantsResultsArray: [],
     };
   }
 
@@ -62,6 +65,8 @@ class App extends React.Component {
       weatherResultsArray: [],
       moviesDisplaying: false,
       moviesResultsArray: [],
+      restaurantsDisplaying: false,
+      restaurantsResultsArray: [],
     });
     this.getLocation();
   };
@@ -169,6 +174,7 @@ class App extends React.Component {
           mapDisplaying={this.state.mapDisplaying}
           moviesDisplaying={this.state.moviesDisplaying}
           weatherDisplaying={this.state.weatherDisplaying}
+          restaurantsDisplaying={this.state.restaurantsDisplaying}
           changeDisplay={this.changeDisplay}
         />
         <CityMap
@@ -193,6 +199,7 @@ class App extends React.Component {
           moviesResultsArray={this.state.moviesResultsArray}
           moviesDisplaying={this.state.moviesDisplaying}
         />
+        {/* <Footer /> */}
       </Container>
     );
   }

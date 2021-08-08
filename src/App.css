@@ -3,8 +3,9 @@
 body {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   text-align: center;
+  height: 100vh;
 }
 
 form {
@@ -29,7 +30,7 @@ img {
   border: solid 3px #f2ff0400;
   transition: all 400ms ease-in-out;
 }
-img:hover {
+img.cityMapImage:hover {
   box-shadow: 0 0 55px 25px #f2ff044f;
   border: solid 3px #f2ff044f;
   opacity: 0.8;
@@ -52,7 +53,7 @@ button:hover {
 button.stateChangerButton,
 button.zoomButton,
 button.exploreButton {
-  width: 200px;
+  width: 210px;
 }
 
 button.stateChangerButton i,
@@ -81,7 +82,7 @@ button.exploreButton i {
   box-shadow: 6px 6px 24px 12px rgba(121, 121, 121, 0.145);
 }
 
-.blue {
+.sky {
   background-color: rgba(0, 0, 255, 0.515);
   color: white;
 }
@@ -94,11 +95,45 @@ button.exploreButton i {
   background-color: rgba(169, 169, 169, 0.515);
 }
 
+.weatherDiv {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 .weatherDiv img {
   width: 120px;
   border: 1px solid white;
   border-radius: 12px;
   padding: 6px;
+  margin-bottom: 24px;
+  align-self: center;
+}
+
+.weatherDiv .sky img {
+  box-shadow: 0 0 25px 25px #f2ff044f;
+}
+
+.weatherDiv .sky p.weatherDescription {
+  box-shadow: 0 0 10px 10px #f2ff044f;
+  color: rgb(5, 54, 252);
+  background-color: rgba(255, 255, 255, 0.926);
+}
+
+.weatherDiv .clouds img {
+  box-shadow: 0 0 25px 25px rgba(169, 169, 169, 0.638);
+}
+
+.weatherDiv .clouds p.weatherDescription {
+  box-shadow: 0 0 10px 10px rgba(169, 169, 169, 0.638);
+}
+
+.weatherDiv .rain img {
+  box-shadow: 0 0 25px 25px rgba(74, 121, 74, 0.515);
+}
+
+.weatherDiv .rain p.weatherDescription {
+  box-shadow: 0 0 10px 10px rgba(74, 121, 74, 0.515);
 }
 
 .weatherDiv p.card-text,
@@ -110,4 +145,11 @@ button.exploreButton i {
 
 .weatherDiv .card-title {
   font-size: 1.6875em;
+}
+
+.weatherDiv p.weatherDescription {
+  font-size: 1.25em;
+  background-color: white;
+  padding: 8px 5px;
+  border-radius: 12px;
 }

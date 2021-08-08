@@ -9,7 +9,7 @@ export class Weather extends Component {
           border='primary'
           className={
             this.props.description.includes('Sky')
-              ? 'blue'
+              ? 'sky'
               : this.props.description.includes('rain')
               ? 'rain'
               : 'clouds'
@@ -17,7 +17,9 @@ export class Weather extends Component {
         >
           <Card.Title>{this.props.dayOfTheWeek}</Card.Title>
           <Card.Text>{this.props.date}</Card.Text>
-          <Card.Text>{this.props.description}</Card.Text>
+          <Card.Text className='weatherDescription'>
+            {this.props.description}
+          </Card.Text>
           <Card.Img
             variant='top'
             src={`./weather_icons/${this.props.icon}.png`}

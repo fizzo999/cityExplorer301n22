@@ -39,6 +39,13 @@ export class CityResult extends Component {
               <i class='bi bi-cloud-sun-fill'></i>
               {this.props.weatherDisplaying ? 'Hide' : 'Show'} weather
             </Button>
+            <Button
+              className='stateChangerButton'
+              onClick={() => this.props.changeDisplay('restaurantsDisplaying')}
+            >
+              <i class='bi bi-cloud-sun-fill'></i>
+              {this.props.restaurantsDisplaying ? 'Hide' : 'Show'} restaurants
+            </Button>
           </>
         ) : (
           ''

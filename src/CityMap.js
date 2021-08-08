@@ -8,6 +8,7 @@ export class CityMap extends Component {
         {this.props.hasSearched && this.props.mapDisplaying ? (
           <>
             <img
+              className='cityMapImage'
               src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATIONIQ_KEY}&center=${this.props.lat},${this.props.lon}&zoom=${this.props.zoomLevel}`}
               alt={`This should display ${this.props.city}`}
               title={this.props.city}
