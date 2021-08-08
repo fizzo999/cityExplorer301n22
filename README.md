@@ -20,6 +20,8 @@ weather API
 yelp API
 and store them in your .env file. Be careful with the naming convention. This is after all a react app...
 
+REACT_APP_LOCATIONIQ_KEY=pk.blahblahblah
+
 <!-- What are the steps that a user must take in order to build this app on their own machine and get it running? -->
 
 ## Architecture
@@ -35,6 +37,16 @@ and bootstrap/react-bootstrap for quick and easy styling
 <!-- Use this area to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an example:
 
 01-01-2001 4:59pm - Application now has a fully-functional express server, with a GET route for the location resource. -->
+
+Name of feature: ******\*\*******\_\_\_\_******\*\*******
+
+Estimate of time needed to complete: **\_**
+
+Start time: **\_**
+
+Finish time: **\_**
+
+Actual time needed to complete: **\_**
 
 ## Credit and Collaborations
 
