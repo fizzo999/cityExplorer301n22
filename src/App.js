@@ -46,6 +46,20 @@ class App extends React.Component {
       });
       return;
     }
+    this.setState({
+      hasError: false,
+      errorMessage: '',
+      citySearchResult: {},
+      lat: 0,
+      lon: 0,
+      status: 0,
+      zoomLevel: 12,
+      mapDisplaying: false,
+      weatherDisplaying: false,
+      weatherResultsArray: [],
+      moviesDisplaying: false,
+      moviesResultsArray: [],
+    });
     try {
       let API = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATIONIQ_KEY}&q=${this.state.city}&format=json`;
       let cityResults = await axios.get(API);
