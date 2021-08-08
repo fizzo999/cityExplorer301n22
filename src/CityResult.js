@@ -43,7 +43,7 @@ export class CityResult extends Component {
               className='stateChangerButton'
               onClick={() => this.props.changeDisplay('restaurantsDisplaying')}
             >
-              <i class='bi bi-cloud-sun-fill'></i>
+              <i class='bi bi-cup-straw'></i>
               {this.props.restaurantsDisplaying ? 'Hide' : 'Show'} restaurants
             </Button>
           </>
