@@ -15,11 +15,13 @@ export class Weather extends Component {
               : 'clouds'
           }
         >
-          <Card.Title>date: {this.props.date}</Card.Title>
+          <Card.Title>{this.props.date}</Card.Title>
           <Card.Img
             variant='top'
             src={`./weather_icons/${this.props.icon}.png`}
           />
+          <Card.Text>low: {this.props.low}</Card.Text>
+          <Card.Text>high: {this.props.high}</Card.Text>
           <Card.Text>{this.props.description}</Card.Text>
         </Card>
       </>

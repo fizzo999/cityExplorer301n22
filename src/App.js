@@ -2,11 +2,11 @@ import React from 'react';
 import './App.css';
 import axios from 'axios';
 import Container from 'react-bootstrap/Container';
-// import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
 import CardColumns from 'react-bootstrap/CardColumns';
 import Weather from './Weather.js';
 import Movie from './Movie.js';
-import CarouselComponent from './Carousel.js';
+// import CarouselComponent from './Carousel.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -51,6 +51,7 @@ class App extends React.Component {
       let cityResults = await axios.get(API);
       this.setState({
         hasSearched: true,
+        mapDisplaying: true,
         citySearchResult: cityResults.data[0],
         status: cityResults.status,
         lat: cityResults.data[0].lat,
@@ -125,6 +126,12 @@ class App extends React.Component {
     });
   };
 
+  changeDisplay = whichDisplay => {
+    this.setState({
+      [whichDisplay]: !this.state[whichDisplay],
+    });
+  };
+
   render() {
     let weatherComponentArray = [];
     if (this.state.weatherResultsArray.length > 0) {
@@ -134,6 +141,8 @@ class App extends React.Component {
             <Weather
               key={index}
               description={eachForecast.description}
+              low={eachForecast.low}
+              high={eachForecast.high}
               date={eachForecast.date}
               icon={eachForecast.icon}
             />
@@ -169,26 +178,49 @@ class App extends React.Component {
           <br />
           <input onChange={this.handleChange}></input>
           <br />
-          <button>EXPLORE !!!</button>
+          <Button type='submit' className='exploreButton'>
+            <i class='bi bi-search'></i>EXPLORE !!!
+          </Button>
         </form>
         {this.state.hasSearched ? (
-          <h3>
-            here is information about the city you searched:{' '}
-            <em className='red'>{this.state.city}</em>
-          </h3>
+          <>
+            <h3>
+              CITY: <em className='red'>{this.state.city}</em> LAT:{' '}
+              <em className='red'> {this.state.lat}</em> LONG:{' '}
+              <em className='red'> {this.state.lon}</em>
+            </h3>
+          </>
         ) : (
           ''
         )}
         {this.state.hasSearched ? (
-          <h3>
-            ok and here is your LAT: <em className='red'> {this.state.lat}</em>{' '}
-            and your LONG:
-            <em className='red'> {this.state.lon}</em>
-          </h3>
+          <>
+            <Button
+              className='stateChangerButton'
+              onClick={() => this.changeDisplay('mapDisplaying')}
+            >
+              <i class='bi bi-map-fill'></i>
+              {this.state.mapDisplaying ? 'Hide' : 'Show'} map
+            </Button>
+            <Button
+              className='stateChangerButton'
+              onClick={() => this.changeDisplay('moviesDisplaying')}
+            >
+              <i className='bi-film'></i>
+              {this.state.moviesDisplaying ? 'Hide' : 'Show'} movies
+            </Button>
+            <Button
+              className='stateChangerButton'
+              onClick={() => this.changeDisplay('weatherDisplaying')}
+            >
+              <i class='bi bi-cloud-sun-fill'></i>
+              {this.state.weatherDisplaying ? 'Hide' : 'Show'} weather
+            </Button>
+          </>
         ) : (
           ''
         )}
-        {this.state.hasSearched ? (
+        {this.state.hasSearched && this.state.mapDisplaying ? (
           <>
             <img
               src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATIONIQ_KEY}&center=${this.state.lat},${this.state.lon}&zoom=${this.state.zoomLevel}`}
@@ -196,9 +228,13 @@ class App extends React.Component {
               title={this.state.city}
             />
             <br />
-            <button onClick={this.handleZoomIn}> Zoom in </button>
-            <button onClick={this.handleZoomOut}> Zoom out </button>
-            <h3>{this.state.zoomLevel}</h3>
+            <Button className='zoomButton' onClick={this.handleZoomIn}>
+              <i class='bi bi-zoom-in'></i> Zoom in{' '}
+            </Button>
+            <Button className='zoomButton' onClick={this.handleZoomOut}>
+              <i class='bi bi-zoom-out'></i> Zoom out{' '}
+            </Button>
+            <h3>current zoom level: {this.state.zoomLevel}</h3>
           </>
         ) : (
           ''
@@ -213,16 +249,16 @@ class App extends React.Component {
         )}
 
         {this.state.weatherResultsArray.length !== 0 &&
-        this.state.hasSearched === true ? (
+        this.state.weatherDisplaying === true ? (
           <Container className='weatherDiv'>
-            <CarouselComponent></CarouselComponent>
+            {/* <CarouselComponent></CarouselComponent> */}
             <CardColumns>{weatherComponentArray}</CardColumns>
           </Container>
         ) : (
           ''
         )}
         {this.state.moviesResultsArray.length !== 0 &&
-        this.state.hasSearched === true ? (
+        this.state.moviesDisplaying === true ? (
           <Container className='moviesDiv'>
             <CardColumns>{moviesComponentArray}</CardColumns>
           </Container>
