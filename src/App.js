@@ -64,38 +64,17 @@ class App extends React.Component {
       moviesResultsArray: [],
     });
     this.getLocation();
-    // try {
-    //   let API = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATIONIQ_KEY}&q=${this.state.city}&format=json`;
-    //   let cityResults = await axios.get(API);
-    //   this.setState({
-    //     hasSearched: true,
-    //     mapDisplaying: true,
-    //     citySearchResult: cityResults.data[0],
-    //     status: cityResults.status,
-    //     lat: cityResults.data[0].lat,
-    //     lon: cityResults.data[0].lon,
-    //     hasError: false,
-    //   });
-    //   this.getWeather();
-    //   this.getMovies();
-    // } catch (error) {
-    //   console.log(
-    //     'here is your error message =======>>>>>>>>',
-    //     error.response.data.error
-    //   );
-    //   this.setState({
-    //     hasSearched: false,
-    //     hasError: true,
-    //     errorMessage: error.response.data.error,
-    //     status: error.response.status,
-    //   });
-    // }
   };
 
   getLocation = async () => {
     try {
-      let API = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATIONIQ_KEY}&q=${this.state.city}&format=json`;
+      // let API5 = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATIONIQ_KEY}&q=${this.state.city}&format=json`;
+      let API = `${process.env.REACT_APP_BACKEND_SERVER}/location?city=${this.state.city}`;
       let cityResults = await axios.get(API);
+      console.log(
+        'here is the cityInfor from our new backend =====>>>>',
+        cityResults
+      );
       this.setState({
         hasSearched: true,
         mapDisplaying: true,
