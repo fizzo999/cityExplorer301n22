@@ -2,11 +2,16 @@ import React from 'react';
 import './App.css';
 import axios from 'axios';
 import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
 import CardColumns from 'react-bootstrap/CardColumns';
 import Weather from './Weather.js';
 import Movie from './Movie.js';
 // import CarouselComponent from './Carousel.js';
+import Header from './Header.js';
+import CityForm from './CityForm.js';
+import CityResult from './CityResult.js';
+import CityMap from './CityMap.js';
+import ErrorComponent from './ErrorComponent.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -186,82 +191,36 @@ class App extends React.Component {
 
     return (
       <Container>
-        <h1>City Explorer</h1>
-        <form onSubmit={this.handleSubmit}>
-          Please enter a city name
-          <br />
-          <input onChange={this.handleChange}></input>
-          <br />
-          <Button type='submit' className='exploreButton'>
-            <i class='bi bi-search'></i>EXPLORE !!!
-          </Button>
-        </form>
-        {this.state.hasSearched ? (
-          <>
-            <h3>
-              CITY: <em className='red'>{this.state.city}</em> LAT:{' '}
-              <em className='red'> {this.state.lat}</em> LONG:{' '}
-              <em className='red'> {this.state.lon}</em>
-            </h3>
-          </>
-        ) : (
-          ''
-        )}
-        {this.state.hasSearched ? (
-          <>
-            <Button
-              className='stateChangerButton'
-              onClick={() => this.changeDisplay('mapDisplaying')}
-            >
-              <i class='bi bi-map-fill'></i>
-              {this.state.mapDisplaying ? 'Hide' : 'Show'} map
-            </Button>
-            <Button
-              className='stateChangerButton'
-              onClick={() => this.changeDisplay('moviesDisplaying')}
-            >
-              <i className='bi-film'></i>
-              {this.state.moviesDisplaying ? 'Hide' : 'Show'} movies
-            </Button>
-            <Button
-              className='stateChangerButton'
-              onClick={() => this.changeDisplay('weatherDisplaying')}
-            >
-              <i class='bi bi-cloud-sun-fill'></i>
-              {this.state.weatherDisplaying ? 'Hide' : 'Show'} weather
-            </Button>
-          </>
-        ) : (
-          ''
-        )}
-        {this.state.hasSearched && this.state.mapDisplaying ? (
-          <>
-            <img
-              src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATIONIQ_KEY}&center=${this.state.lat},${this.state.lon}&zoom=${this.state.zoomLevel}`}
-              alt={`This should display ${this.state.city}`}
-              title={this.state.city}
-            />
-            <br />
-            <Button className='zoomButton' onClick={this.handleZoomIn}>
-              <i class='bi bi-zoom-in'></i> Zoom in{' '}
-            </Button>
-            <Button className='zoomButton' onClick={this.handleZoomOut}>
-              <i class='bi bi-zoom-out'></i> Zoom out{' '}
-            </Button>
-            <h3>current zoom level: {this.state.zoomLevel}</h3>
-          </>
-        ) : (
-          ''
-        )}
-        {this.state.hasError ? (
-          <>
-            <h2 className='red'> error status code: {this.state.status}</h2>
-            <h2 className='red'> error message: {this.state.errorMessage}</h2>
-          </>
-        ) : (
-          ''
-        )}
-
+        <Header />
+        <CityForm
+          handleSubmit={this.handleSubmit}
+          handleChange={this.handleChange}
+        />
+        <CityResult
+          city={this.state.city}
+          lat={this.state.lat}
+          lon={this.state.lon}
+          hasSearched={this.state.hasSearched}
+          mapDisplaying={this.state.mapDisplaying}
+          moviesDisplaying={this.state.moviesDisplaying}
+          weatherDisplaying={this.state.weatherDisplaying}
+          changeDisplay={this.changeDisplay}
+        />
+        <CityMap
+          hasSearched={this.state.hasSearched}
+          mapDisplaying={this.state.mapDisplaying}
+          lat={this.state.lat}
+          lon={this.state.lon}
+          zoomLevel={this.state.zoomLevel}
+          city={this.state.city}
+          handleZoomIn={this.handleZoomIn}
+          handleZoomOut={this.handleZoomOut}
+        />
+        <ErrorComponent
+          hasError={this.state.hasError}
+          status={this.state.status}
+          errorMessage={this.state.errorMessage}
+        />
         {this.state.weatherResultsArray.length !== 0 &&
         this.state.weatherDisplaying === true ? (
           <Container className='weatherDiv'>
