@@ -10,6 +10,7 @@ import CityMap from './CityMap.js';
 import ErrorComponent from './ErrorComponent.js';
 import WeatherComponent from './WeatherComponent.js';
 import MoviesComponent from './MoviesComponent.js';
+import RestaurantsComponent from './RestaurantsComponent.js';
 // import Footer from './Footer.js';
 
 class App extends React.Component {
@@ -87,6 +88,7 @@ class App extends React.Component {
       });
       this.getWeather();
       this.getMovies();
+      this.getRestaurants();
     } catch (error) {
       console.log(
         'here is your error message =======>>>>>>>>',
@@ -142,6 +144,29 @@ class App extends React.Component {
       });
     }
   };
+  getRestaurants = async () => {
+    try {
+      let API4 = `${process.env.REACT_APP_BACKEND_SERVER}/restaurants?lat=${this.state.lat}&lon=${this.state.lon}`;
+      let restaurantArray = await axios.get(API4);
+      console.log('here are them restaurants', restaurantArray);
+      this.setState({
+        hasError: false,
+        restaurantsResultsArray: restaurantArray.data,
+        status: restaurantArray.status,
+      });
+    } catch (error) {
+      console.log(
+        'here is your error message for Restaurants =======>>>>>>>>',
+        error
+      );
+      this.setState({
+        hasSearched: false,
+        hasError: true,
+        errorMessage: error.response.data ? error.response.data : error,
+        status: error.response.status ? error.response.status : error,
+      });
+    }
+  };
   handleZoom = amount => {
     this.setState({
       zoomLevel: this.state.zoomLevel + amount,
@@ -155,6 +180,7 @@ class App extends React.Component {
   };
 
   render() {
+    console.log('hello');
     return (
       <Container>
         <Header />
@@ -194,6 +220,10 @@ class App extends React.Component {
         <MoviesComponent
           moviesResultsArray={this.state.moviesResultsArray}
           moviesDisplaying={this.state.moviesDisplaying}
+        />
+        <RestaurantsComponent
+          restaurantsResultsArray={this.state.restaurantsResultsArray}
+          restaurantsDisplaying={this.state.restaurantsDisplaying}
         />
         {/* <Footer /> */}
       </Container>
