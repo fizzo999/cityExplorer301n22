@@ -1,6 +1,6 @@
 # Project Name City Explorer 301n22
 
-**Author**: Fizzo Pannosch
+**Author**: ✨Fizzo Pannosch✨
 **Version**: 3.0.0
 
 ## Overview
