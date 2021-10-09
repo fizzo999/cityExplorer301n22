@@ -1,11 +1,11 @@
-# Project Name City Explorer 301n22
+# Project Name: City Explorer 301n22
 
 **Author**: ✨Fizzo Pannosch✨
 **Version**: 3.0.0
 
-## Overview
+## Deployed site @ https://fizzo-city-explorer.netlify.app/
 
-Problem domain:
+## Overview - Problem domain:
 
 as a user,
 I want to enter a city name
@@ -18,7 +18,7 @@ and receive information about a city, specifically
 
 This is a Code Fellows 301 project to train students to make a frontend react app that allows a user to enter a city name into a form and upon submit to receive and display information about a city.
 
-That city name gets sent to my own backend server that is deployed on heroku that make a call out to the locationIQ API to bring back latitude and longitude precise information that allows the react app to render a map of the city. Then the lat and lon information gets sent to the weatherbit.io API for forecast data about the next 16 days. It also gets sent to the movieDB.org API for movie information searched with the keyword of entered city.
+That city name gets sent to my own backend server that is deployed on heroku that makes a call out to the locationIQ API to bring back latitude and longitude precise information that allows the react app to render a map of the city. Then the lat and lon information gets sent to the weatherbit.io API for forecast data about the next 16 days. It also gets sent to the movieDB.org API for movie information searched with the keyword of entered city. And it gets sent to Yelp for restaurant data in the searched city
 
 This App connects to a server https://fizzo-city-explorer-server.herokuapp.comcity-explorer that I built that allows the following routes:
 
@@ -26,6 +26,7 @@ This App connects to a server https://fizzo-city-explorer-server.herokuapp.comci
 - /location?city=Seattle - a location route to call out to locationIQ and then serve back the lat and long for a city
 - /weather?lat=47.6038321&lon=-122.3300624 - a weather route to get 16day forcast for a city
 - /movies?city=Seattle - a movies route to get movie info(title, release date, movie poster, description) about a city
+- /restaurants?city=Seattle - a reestaurant route to get restaurant info (name, phone number, yelp link, photo, rating) about a city
 
 <!-- Provide a high level overview of what this application is and why you are building it, beyond the fact that it's an assignment for this class. (i.e. What's your problem domain?) -->
 
