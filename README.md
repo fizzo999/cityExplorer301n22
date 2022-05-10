@@ -20,7 +20,7 @@ This is a Code Fellows 301 project to train students to make a frontend react ap
 
 That city name gets sent to my own backend server that is deployed on heroku that makes a call out to the locationIQ API to bring back latitude and longitude precise information that allows the react app to render a map of the city. Then the lat and lon information gets sent to the weatherbit.io API for forecast data about the next 16 days. It also gets sent to the movieDB.org API for movie information searched with the keyword of entered city. And it gets sent to Yelp for restaurant data in the searched city
 
-This App connects to a server https://fizzo-city-explorer-server.herokuapp.comcity-explorer that I built that allows the following routes:
+This App connects to a server https://fizzo-city-explorer-server.herokuapp.com/city-explorer that I built that allows the following routes:
 
 - / - home route for testing resulting in a greeting message - proof of life
 - /location?city=Seattle - a location route to call out to locationIQ and then serve back the lat and long for a city
